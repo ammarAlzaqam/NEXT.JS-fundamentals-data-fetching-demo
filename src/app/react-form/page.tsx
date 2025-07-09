@@ -41,8 +41,8 @@ export default function CreateProductForm() {
 
         <div>
           <label htmlFor="description">Description</label>
-          <input
-            type=""
+          <textarea
+            rows={5}
             id="description"
             name="description"
             value={formik.values.description}

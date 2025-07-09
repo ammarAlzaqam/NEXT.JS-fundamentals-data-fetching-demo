@@ -1,12 +1,12 @@
 import connectDB from "@/libs/connectdb";
 import Product from "@/models/product";
-import { createPostSchema } from "@/utils/validationSchema";
+import { createProductSchema } from "@/utils/validationSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validation = createPostSchema.safeParse(body);
+    const validation = createProductSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
         { message: validation.error.issues[0]?.message || "Invalid input" },
