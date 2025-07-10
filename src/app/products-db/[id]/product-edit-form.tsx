@@ -1,19 +1,19 @@
 "use client";
 
 import { useActionState } from "react";
-import { AddProduct, FormState } from "../actions/product";
+import { EditProduct, FormState } from "@/app/actions/product";
+import { Product } from "../page";
 
-
-
-export default function AddProductPage() {
+export default function EditProductForm({ product }: { product: Product }) {
   const initialState: FormState = {
     errors: {},
   };
+  
+  const EditProductWithId = EditProduct.bind(null, product.id);
   const [state, formAction, isPending] = useActionState(
-    AddProduct,
+    EditProductWithId,
     initialState
   );
-  
 
   return (
     <section className="h-screen flex justify-center items-center">
@@ -28,6 +28,7 @@ export default function AddProductPage() {
             id="title"
             name="title"
             className="block bg-white w-full outline-none p-2 text-gray-800 rounded-md focus:bg-amber-50"
+            defaultValue={product.title}
           />
           {state.errors.title && (
             <p className="text-red-500">{state.errors.title}</p>
@@ -41,6 +42,7 @@ export default function AddProductPage() {
             id="price"
             name="price"
             className="block bg-white w-full outline-none p-2 text-gray-800 rounded-md focus:bg-amber-50"
+            defaultValue={product.price}
           />
           {state.errors.price && (
             <p className="text-red-500">{state.errors.price}</p>
@@ -54,6 +56,7 @@ export default function AddProductPage() {
             id="description"
             name="description"
             className="resize-none block bg-white w-full outline-none p-2 text-gray-800 rounded-md focus:bg-amber-50"
+            defaultValue={product.description ?? ""}
           />
           {state.errors.description && (
             <p className="text-red-500">{state.errors.description}</p>

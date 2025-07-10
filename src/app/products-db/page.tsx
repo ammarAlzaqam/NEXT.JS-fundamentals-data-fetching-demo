@@ -1,8 +1,9 @@
 import connectDB from "@/libs/connectdb";
 import Product, { ProductDocument } from "@/models/product";
+import Link from "next/link";
 
-type Product = {
-  id: number;
+export type Product = {
+  id: string;
   title: string;
   price: number;
   description: string | null;
@@ -16,7 +17,9 @@ export default async function ProductsDBPage() {
     <section className="m-10 space-y-10 text-black">
       {products.map((p) => (
         <div key={p.id} className="p-5 rounded-md space-y-3 bg-white">
-          <h3 className="font-bold">{p.title}</h3>
+          <h3 className="font-bold">
+            <Link href={`/products-db/${p.id}`}>{p.title}</Link>
+          </h3>
           <p>{p.description}</p>
           <p>${p.price}</p>
         </div>
