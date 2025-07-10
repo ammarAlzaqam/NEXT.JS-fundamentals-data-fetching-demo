@@ -9,9 +9,22 @@ export type Product = {
   description: string | null;
 };
 
-export default async function ProductsDBPage() {
+export default async function ProductsDBPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) {
+  const { query } = await searchParams;
   await connectDB();
-  const productsDoc = (await Product.find()) as ProductDocument[];
+  const filter = query
+    ? {
+        $or: [
+          { title: { $regex: query, $options: "i" } },
+          { description: { $regex: query, $options: "i" } },
+        ],
+      }
+    : {};
+  const productsDoc = (await Product.find(filter)) as ProductDocument[];
   const products: Product[] = productsDoc.map((p) => ({
     id: p.id,
     title: p.title,
