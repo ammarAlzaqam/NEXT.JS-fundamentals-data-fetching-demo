@@ -1,6 +1,10 @@
+"use client"
+
 import Product from "@/models/product";
 import { createProductSchema } from "@/utils/validationSchema";
 import { redirect } from "next/navigation";
+import Submit from "./submit";
+import connectDB from "@/libs/connectdb";
 
 export default function AddProductPage() {
   async function AddProduct(formData: FormData) {
@@ -15,6 +19,7 @@ export default function AddProductPage() {
       description,
     });
     if (!result.success) return;
+    await connectDB();
     await Product.create({ title, price, description });
     redirect("/products-db");
   }
@@ -54,12 +59,7 @@ export default function AddProductPage() {
             className="resize-none block bg-white w-full outline-none p-2 text-gray-800 rounded-md focus:bg-amber-50"
           />
         </div>
-        <button
-          type="submit"
-          className="inline-block w-full text-center capitalize mt-5 bg-blue-500 text-white p-1 cursor-pointer hover:bg-cyan-600 transition rounded-sm"
-        >
-          Add Product
-        </button>
+        <Submit />
       </form>
     </section>
   );
