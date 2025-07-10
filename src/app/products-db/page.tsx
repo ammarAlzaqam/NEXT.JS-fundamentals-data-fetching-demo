@@ -1,6 +1,7 @@
 import connectDB from "@/libs/connectdb";
 import Product, { ProductDocument } from "@/models/product";
 import Link from "next/link";
+import { RemoveProduct } from "../actions/product";
 
 export type Product = {
   id: string;
@@ -22,6 +23,11 @@ export default async function ProductsDBPage() {
           </h3>
           <p>{p.description}</p>
           <p>${p.price}</p>
+          <form action={RemoveProduct.bind(null, p.id)}>
+            <button className="px-5 py-2 cursor-pointer rounded-md text-white bg-red-500 hover:bg-red-700 transition shadow-md">
+              DELETE
+            </button>
+          </form>
         </div>
       ))}
     </section>

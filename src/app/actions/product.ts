@@ -3,6 +3,7 @@
 import connectDB from "@/libs/connectdb";
 import Product from "@/models/product";
 import { createProductSchema } from "@/utils/validationSchema";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export type Errors = {
@@ -61,6 +62,11 @@ export async function EditProduct(
     return { errors };
   }
   await connectDB();
-  await Product.updateOne({_id: id}, { title, price, description });
+  await Product.updateOne({ _id: id }, { title, price, description });
   redirect("/products-db");
+}
+
+export async function RemoveProduct(id: string) {
+  await Product.deleteOne({ _id: id });
+  revalidatePath("/products-db");
 }
