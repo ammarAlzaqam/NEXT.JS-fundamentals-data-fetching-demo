@@ -1,21 +1,7 @@
 "use client";
 
-import Product from "@/models/product";
-import { createProductSchema } from "@/utils/validationSchema";
-import { redirect } from "next/navigation";
-import Submit from "./submit";
-import connectDB from "@/libs/connectdb";
 import { useActionState } from "react";
-
-type Errors = {
-  title?: string;
-  price?: string;
-  description?: string;
-};
-
-type FormState = {
-  errors: Errors;
-};
+import { AddProduct, FormState } from "../actions/product";
 
 export default function AddProductPage() {
   const initialState: FormState = {
@@ -25,29 +11,6 @@ export default function AddProductPage() {
     AddProduct,
     initialState
   );
-  async function AddProduct(formData: FormData) {
-    "use server";
-
-    const title = formData.get("title")?.toString();
-    const price = Number(formData.get("price"));
-    const description = formData.get("description")?.toString();
-    const result = createProductSchema.safeParse({
-      title,
-      price,
-      description,
-    });
-    if (!result.success) {
-      const errors: Errors = {};
-      result.error.issues.forEach((issue) => {
-        const filed = issue.path[0] as keyof Errors;
-        errors[filed] = issue.message;
-      });
-      return { errors };
-    }
-    await connectDB();
-    await Product.create({ title, price, description });
-    redirect("/products-db");
-  }
 
   return (
     <section className="h-screen flex justify-center items-center">
