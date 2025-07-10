@@ -3,6 +3,7 @@ import Link from "next/link";
 import { RemoveProduct } from "../actions/product";
 import { Product } from "./page";
 import { useOptimistic } from "react";
+import Form from "next/form";
 
 export default function ProductsDetail({ products }: { products: Product[] }) {
   const [optimisticProducts, setOptimisticProducts] = useOptimistic(
@@ -26,11 +27,11 @@ export default function ProductsDetail({ products }: { products: Product[] }) {
           </h3>
           <p>{p.description}</p>
           <p>${p.price}</p>
-          <form action={handleRemoveProduct.bind(null, p.id)}>
+          <Form action={handleRemoveProduct.bind(null, p.id)}>
             <button className="px-5 py-2 cursor-pointer rounded-md text-white bg-red-500 hover:bg-red-700 transition shadow-md">
               DELETE
             </button>
-          </form>
+          </Form>
         </div>
       ))}
     </section>
